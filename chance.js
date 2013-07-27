@@ -1,4 +1,4 @@
-//  Chance.js 0.4.2
+//  Chance.js 0.4.3
 //  http://chancejs.com
 //  (c) 2013 Victor Quinn
 //  Chance may be freely distributed or modified under the MIT license.
@@ -863,6 +863,60 @@
     // -- End Finance
 
     // -- Miscellaneous --
+
+    // -- Playing Cards
+    Chance.prototype.ranks = function () {
+	return [
+	    {name: "Two", short_name: "2"},
+	    {name: "Three", short_name: "3"},
+	    {name: "Four", short_name: "4"},
+	    {name: "Five", short_name: "5"},
+	    {name: "Six", short_name: "6"},
+	    {name: "Seven", short_name: "7"},
+	    {name: "Eight", short_name: "8"},
+	    {name: "Nine", short_name: "9"},
+	    {name: "Ten", short_name: "10"},
+	    {name: "Jack", short_name: "J"},
+	    {name: "Queen", short_name: "Q"},
+	    {name: "King", short_name: "K"},
+	    {name: "Ace", short_name: "A"}
+	];
+    };
+
+    Chance.prototype.rank = function (options) {
+	options = options || {}; 
+	var rank = this.pick(this.ranks());
+	return options.raw ? rank : rank.name;
+    }; 
+
+    Chance.prototype.suits = function () {
+	return [
+	    {name: "Clubs", short_name: "C"},
+	    {name: "Diamonds", short_name: "D"},
+	    {name: "Hearts", short_name: "H"},
+	    {name: "Spades", short_name: "S"}
+	];
+    };
+
+    Chance.prototype.suit = function (options) {
+	options = options || {};
+	var suit = this.pick(this.suits());
+	return options.raw ? suit : suit.name;
+    };
+
+    Chance.prototype.card = function (options) {
+	options = options || {};
+	var card = [{this.rank()}, {this.suit()}];
+	
+	if (options.short_name) {
+	    card = card[0].short_name + card[1].short_name
+	} else if (options.long_name) {
+	    card = card[0].name + " of " + card[1].name;
+	}
+
+	return card;
+    };
+    // -- End Playing Cards
 
     // Dice - For all the board game geeks out there, myself included ;)
     Chance.prototype.d4 = function () { return this.natural({min: 1, max: 4}); };
